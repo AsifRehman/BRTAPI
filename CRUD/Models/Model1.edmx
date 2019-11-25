@@ -1,0 +1,513 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="DbModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Firm">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="tinyint" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="GSTNO" Type="varchar" MaxLength="50" />
+          <Property Name="NTN" Type="varchar" MaxLength="50" />
+          <Property Name="Part1" Type="varchar" MaxLength="50" />
+          <Property Name="Part2" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="150" />
+          <Property Name="ACTYPE" Type="varchar" MaxLength="50" />
+          <Property Name="ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="DBTYPE" Type="varchar" MaxLength="10" />
+          <Property Name="uName" Type="nvarchar" MaxLength="50" />
+          <Property Name="isTaxable" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_Head">
+          <Key>
+            <PropertyRef Name="HeadID" />
+          </Key>
+          <Property Name="HeadID" Type="smallint" Nullable="false" />
+          <Property Name="Head" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="MHeadID" Type="tinyint" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Ledger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VocNo" Type="int" Nullable="false" />
+          <Property Name="SrNo" Type="int" Nullable="false" />
+          <Property Name="Date" Type="smalldatetime" Nullable="false" />
+          <Property Name="TType" Type="varchar" MaxLength="5" />
+          <Property Name="PartyRef" Type="int" />
+          <Property Name="PartyID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="250" />
+          <Property Name="NetDebit" Type="int" />
+          <Property Name="NetCredit" Type="int" />
+          <Property Name="pVocNo" Type="int" />
+          <Property Name="VRef" Type="int" />
+          <Property Name="CashAC" Type="int" />
+          <Property Name="firmID" Type="tinyint" Nullable="false" />
+          <Property Name="IsPosted" Type="bit" Nullable="false" />
+          <Property Name="IsApproved" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_MHead">
+          <Key>
+            <PropertyRef Name="MHeadID" />
+          </Key>
+          <Property Name="MHeadID" Type="tinyint" Nullable="false" />
+          <Property Name="MHead" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Party">
+          <Key>
+            <PropertyRef Name="PartyNameID" />
+          </Key>
+          <Property Name="PartyNameID" Type="int" Nullable="false" />
+          <Property Name="STaxPID" Type="int" />
+          <Property Name="PartyName" Type="nvarchar" MaxLength="60" Nullable="false" />
+          <Property Name="City" Type="nvarchar" MaxLength="30" />
+          <Property Name="Debit" Type="float" />
+          <Property Name="Credit" Type="float" />
+          <Property Name="PartyTypeID" Type="int" Nullable="false" />
+          <Property Name="Dealer" Type="varchar" MaxLength="30" />
+          <Property Name="UrduName" Type="nvarchar" MaxLength="75" />
+          <Property Name="Phone" Type="varchar" MaxLength="50" />
+          <Property Name="Address" Type="varchar" MaxLength="100" />
+          <Property Name="Expired" Type="bit" />
+          <Property Name="firmid" Type="tinyint" />
+          <Property Name="ts" Type="timestamp" StoreGeneratedPattern="Computed" />
+          <Property Name="GSTNO" Type="varchar" MaxLength="50" />
+          <Property Name="GreyID" Type="int" />
+          <Property Name="PartyID" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_PartyCateg">
+          <Key>
+            <PropertyRef Name="PartyCategID" />
+          </Key>
+          <Property Name="PartyCategID" Type="int" Nullable="false" />
+          <Property Name="PartyCateg" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="HeadID" Type="smallint" />
+        </EntityType>
+        <EntityType Name="tbl_PartyType">
+          <Key>
+            <PropertyRef Name="PartyTypeID" />
+          </Key>
+          <Property Name="PartyTypeID" Type="int" Nullable="false" />
+          <Property Name="PartyType" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="UPartyType" Type="nvarchar" MaxLength="50" />
+          <Property Name="PartyCategID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_tbl_Head_tbl_MHead">
+          <End Role="tbl_MHead" Type="Self.tbl_MHead" Multiplicity="1" />
+          <End Role="tbl_Head" Type="Self.tbl_Head" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_MHead">
+              <PropertyRef Name="MHeadID" />
+            </Principal>
+            <Dependent Role="tbl_Head">
+              <PropertyRef Name="MHeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Ledger_tbl_Party">
+          <End Role="tbl_Party" Type="Self.tbl_Party" Multiplicity="1" />
+          <End Role="tbl_Ledger" Type="Self.tbl_Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Party">
+              <PropertyRef Name="PartyNameID" />
+            </Principal>
+            <Dependent Role="tbl_Ledger">
+              <PropertyRef Name="PartyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Party_tbl_PartyType">
+          <End Role="tbl_PartyType" Type="Self.tbl_PartyType" Multiplicity="1" />
+          <End Role="tbl_Party" Type="Self.tbl_Party" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_PartyType">
+              <PropertyRef Name="PartyTypeID" />
+            </Principal>
+            <Dependent Role="tbl_Party">
+              <PropertyRef Name="PartyTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_PartyCateg_tbl_Head">
+          <End Role="tbl_Head" Type="Self.tbl_Head" Multiplicity="0..1" />
+          <End Role="tbl_PartyCateg" Type="Self.tbl_PartyCateg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Head">
+              <PropertyRef Name="HeadID" />
+            </Principal>
+            <Dependent Role="tbl_PartyCateg">
+              <PropertyRef Name="HeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_PartyType_tbl_PartyCateg">
+          <End Role="tbl_PartyCateg" Type="Self.tbl_PartyCateg" Multiplicity="1" />
+          <End Role="tbl_PartyType" Type="Self.tbl_PartyType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_PartyCateg">
+              <PropertyRef Name="PartyCategID" />
+            </Principal>
+            <Dependent Role="tbl_PartyType">
+              <PropertyRef Name="PartyCategID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="DbModelStoreContainer">
+          <EntitySet Name="Firm" EntityType="Self.Firm" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Head" EntityType="Self.tbl_Head" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Ledger" EntityType="Self.tbl_Ledger" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_MHead" EntityType="Self.tbl_MHead" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Party" EntityType="Self.tbl_Party" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PartyCateg" EntityType="Self.tbl_PartyCateg" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_PartyType" EntityType="Self.tbl_PartyType" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_tbl_Head_tbl_MHead" Association="Self.FK_tbl_Head_tbl_MHead">
+            <End Role="tbl_MHead" EntitySet="tbl_MHead" />
+            <End Role="tbl_Head" EntitySet="tbl_Head" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Ledger_tbl_Party" Association="Self.FK_tbl_Ledger_tbl_Party">
+            <End Role="tbl_Party" EntitySet="tbl_Party" />
+            <End Role="tbl_Ledger" EntitySet="tbl_Ledger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Party_tbl_PartyType" Association="Self.FK_tbl_Party_tbl_PartyType">
+            <End Role="tbl_PartyType" EntitySet="tbl_PartyType" />
+            <End Role="tbl_Party" EntitySet="tbl_Party" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_PartyCateg_tbl_Head" Association="Self.FK_tbl_PartyCateg_tbl_Head">
+            <End Role="tbl_Head" EntitySet="tbl_Head" />
+            <End Role="tbl_PartyCateg" EntitySet="tbl_PartyCateg" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_PartyType_tbl_PartyCateg" Association="Self.FK_tbl_PartyType_tbl_PartyCateg">
+            <End Role="tbl_PartyCateg" EntitySet="tbl_PartyCateg" />
+            <End Role="tbl_PartyType" EntitySet="tbl_PartyType" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="DbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Firm">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Byte" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GSTNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="NTN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Part1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Part2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="ACTYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="DBTYPE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+          <Property Name="uName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="isTaxable" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="tbl_Head">
+          <Key>
+            <PropertyRef Name="HeadID" />
+          </Key>
+          <Property Name="HeadID" Type="Int16" Nullable="false" />
+          <Property Name="Head" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="MHeadID" Type="Byte" Nullable="false" />
+          <NavigationProperty Name="tbl_MHead" Relationship="Self.FK_tbl_Head_tbl_MHead" FromRole="tbl_Head" ToRole="tbl_MHead" />
+          <NavigationProperty Name="tbl_PartyCateg" Relationship="Self.FK_tbl_PartyCateg_tbl_Head" FromRole="tbl_Head" ToRole="tbl_PartyCateg" />
+        </EntityType>
+        <EntityType Name="tbl_Ledger">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="VocNo" Type="Int32" Nullable="false" />
+          <Property Name="SrNo" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="TType" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="PartyRef" Type="Int32" />
+          <Property Name="PartyID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+          <Property Name="NetDebit" Type="Int32" />
+          <Property Name="NetCredit" Type="Int32" />
+          <Property Name="pVocNo" Type="Int32" />
+          <Property Name="VRef" Type="Int32" />
+          <Property Name="CashAC" Type="Int32" />
+          <Property Name="firmID" Type="Byte" Nullable="false" />
+          <Property Name="IsPosted" Type="Boolean" Nullable="false" />
+          <Property Name="IsApproved" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="tbl_Party" Relationship="Self.FK_tbl_Ledger_tbl_Party" FromRole="tbl_Ledger" ToRole="tbl_Party" />
+        </EntityType>
+        <EntityType Name="tbl_MHead">
+          <Key>
+            <PropertyRef Name="MHeadID" />
+          </Key>
+          <Property Name="MHeadID" Type="Byte" Nullable="false" />
+          <Property Name="MHead" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="tbl_Head" Relationship="Self.FK_tbl_Head_tbl_MHead" FromRole="tbl_MHead" ToRole="tbl_Head" />
+        </EntityType>
+        <EntityType Name="tbl_Party">
+          <Key>
+            <PropertyRef Name="PartyNameID" />
+          </Key>
+          <Property Name="PartyNameID" Type="Int32" Nullable="false" />
+          <Property Name="STaxPID" Type="Int32" />
+          <Property Name="PartyName" Type="String" MaxLength="60" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="City" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="Debit" Type="Double" />
+          <Property Name="Credit" Type="Double" />
+          <Property Name="PartyTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Dealer" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+          <Property Name="UrduName" Type="String" MaxLength="75" FixedLength="false" Unicode="true" />
+          <Property Name="Phone" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Address" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="Expired" Type="Boolean" />
+          <Property Name="firmid" Type="Byte" />
+          <Property Name="ts" Type="Binary" MaxLength="8" FixedLength="true" annotation:StoreGeneratedPattern="Computed" />
+          <Property Name="GSTNO" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="GreyID" Type="Int32" />
+          <Property Name="PartyID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="tbl_Ledger" Relationship="Self.FK_tbl_Ledger_tbl_Party" FromRole="tbl_Party" ToRole="tbl_Ledger" />
+          <NavigationProperty Name="tbl_PartyType" Relationship="Self.FK_tbl_Party_tbl_PartyType" FromRole="tbl_Party" ToRole="tbl_PartyType" />
+        </EntityType>
+        <EntityType Name="tbl_PartyCateg">
+          <Key>
+            <PropertyRef Name="PartyCategID" />
+          </Key>
+          <Property Name="PartyCategID" Type="Int32" Nullable="false" />
+          <Property Name="PartyCateg" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="HeadID" Type="Int16" />
+          <NavigationProperty Name="tbl_Head" Relationship="Self.FK_tbl_PartyCateg_tbl_Head" FromRole="tbl_PartyCateg" ToRole="tbl_Head" />
+          <NavigationProperty Name="tbl_PartyType" Relationship="Self.FK_tbl_PartyType_tbl_PartyCateg" FromRole="tbl_PartyCateg" ToRole="tbl_PartyType" />
+        </EntityType>
+        <EntityType Name="tbl_PartyType">
+          <Key>
+            <PropertyRef Name="PartyTypeID" />
+          </Key>
+          <Property Name="PartyTypeID" Type="Int32" Nullable="false" />
+          <Property Name="PartyType" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="UPartyType" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PartyCategID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbl_Party" Relationship="Self.FK_tbl_Party_tbl_PartyType" FromRole="tbl_PartyType" ToRole="tbl_Party" />
+          <NavigationProperty Name="tbl_PartyCateg" Relationship="Self.FK_tbl_PartyType_tbl_PartyCateg" FromRole="tbl_PartyType" ToRole="tbl_PartyCateg" />
+        </EntityType>
+        <Association Name="FK_tbl_Head_tbl_MHead">
+          <End Role="tbl_MHead" Type="Self.tbl_MHead" Multiplicity="1" />
+          <End Role="tbl_Head" Type="Self.tbl_Head" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_MHead">
+              <PropertyRef Name="MHeadID" />
+            </Principal>
+            <Dependent Role="tbl_Head">
+              <PropertyRef Name="MHeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_PartyCateg_tbl_Head">
+          <End Role="tbl_Head" Type="Self.tbl_Head" Multiplicity="0..1" />
+          <End Role="tbl_PartyCateg" Type="Self.tbl_PartyCateg" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Head">
+              <PropertyRef Name="HeadID" />
+            </Principal>
+            <Dependent Role="tbl_PartyCateg">
+              <PropertyRef Name="HeadID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Ledger_tbl_Party">
+          <End Role="tbl_Party" Type="Self.tbl_Party" Multiplicity="1" />
+          <End Role="tbl_Ledger" Type="Self.tbl_Ledger" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Party">
+              <PropertyRef Name="PartyNameID" />
+            </Principal>
+            <Dependent Role="tbl_Ledger">
+              <PropertyRef Name="PartyID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Party_tbl_PartyType">
+          <End Role="tbl_PartyType" Type="Self.tbl_PartyType" Multiplicity="1" />
+          <End Role="tbl_Party" Type="Self.tbl_Party" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_PartyType">
+              <PropertyRef Name="PartyTypeID" />
+            </Principal>
+            <Dependent Role="tbl_Party">
+              <PropertyRef Name="PartyTypeID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_PartyType_tbl_PartyCateg">
+          <End Role="tbl_PartyCateg" Type="Self.tbl_PartyCateg" Multiplicity="1" />
+          <End Role="tbl_PartyType" Type="Self.tbl_PartyType" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_PartyCateg">
+              <PropertyRef Name="PartyCategID" />
+            </Principal>
+            <Dependent Role="tbl_PartyType">
+              <PropertyRef Name="PartyCategID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Db1" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Firms" EntityType="Self.Firm" />
+          <EntitySet Name="tbl_Head" EntityType="Self.tbl_Head" />
+          <EntitySet Name="tbl_Ledger" EntityType="Self.tbl_Ledger" />
+          <EntitySet Name="tbl_MHead" EntityType="Self.tbl_MHead" />
+          <EntitySet Name="tbl_Party" EntityType="Self.tbl_Party" />
+          <EntitySet Name="tbl_PartyCateg" EntityType="Self.tbl_PartyCateg" />
+          <EntitySet Name="tbl_PartyType" EntityType="Self.tbl_PartyType" />
+          <AssociationSet Name="FK_tbl_Head_tbl_MHead" Association="Self.FK_tbl_Head_tbl_MHead">
+            <End Role="tbl_MHead" EntitySet="tbl_MHead" />
+            <End Role="tbl_Head" EntitySet="tbl_Head" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_PartyCateg_tbl_Head" Association="Self.FK_tbl_PartyCateg_tbl_Head">
+            <End Role="tbl_Head" EntitySet="tbl_Head" />
+            <End Role="tbl_PartyCateg" EntitySet="tbl_PartyCateg" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Ledger_tbl_Party" Association="Self.FK_tbl_Ledger_tbl_Party">
+            <End Role="tbl_Party" EntitySet="tbl_Party" />
+            <End Role="tbl_Ledger" EntitySet="tbl_Ledger" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Party_tbl_PartyType" Association="Self.FK_tbl_Party_tbl_PartyType">
+            <End Role="tbl_PartyType" EntitySet="tbl_PartyType" />
+            <End Role="tbl_Party" EntitySet="tbl_Party" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_PartyType_tbl_PartyCateg" Association="Self.FK_tbl_PartyType_tbl_PartyCateg">
+            <End Role="tbl_PartyCateg" EntitySet="tbl_PartyCateg" />
+            <End Role="tbl_PartyType" EntitySet="tbl_PartyType" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="DbModelStoreContainer" CdmEntityContainer="Db1">
+          <EntitySetMapping Name="Firms">
+            <EntityTypeMapping TypeName="DbModel.Firm">
+              <MappingFragment StoreEntitySet="Firm">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GSTNO" ColumnName="GSTNO" />
+                <ScalarProperty Name="NTN" ColumnName="NTN" />
+                <ScalarProperty Name="Part1" ColumnName="Part1" />
+                <ScalarProperty Name="Part2" ColumnName="Part2" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="ACTYPE" ColumnName="ACTYPE" />
+                <ScalarProperty Name="ts" ColumnName="ts" />
+                <ScalarProperty Name="DBTYPE" ColumnName="DBTYPE" />
+                <ScalarProperty Name="uName" ColumnName="uName" />
+                <ScalarProperty Name="isTaxable" ColumnName="isTaxable" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Head">
+            <EntityTypeMapping TypeName="DbModel.tbl_Head">
+              <MappingFragment StoreEntitySet="tbl_Head">
+                <ScalarProperty Name="HeadID" ColumnName="HeadID" />
+                <ScalarProperty Name="Head" ColumnName="Head" />
+                <ScalarProperty Name="MHeadID" ColumnName="MHeadID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Ledger">
+            <EntityTypeMapping TypeName="DbModel.tbl_Ledger">
+              <MappingFragment StoreEntitySet="tbl_Ledger">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="VocNo" ColumnName="VocNo" />
+                <ScalarProperty Name="SrNo" ColumnName="SrNo" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="TType" ColumnName="TType" />
+                <ScalarProperty Name="PartyRef" ColumnName="PartyRef" />
+                <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="NetDebit" ColumnName="NetDebit" />
+                <ScalarProperty Name="NetCredit" ColumnName="NetCredit" />
+                <ScalarProperty Name="pVocNo" ColumnName="pVocNo" />
+                <ScalarProperty Name="VRef" ColumnName="VRef" />
+                <ScalarProperty Name="CashAC" ColumnName="CashAC" />
+                <ScalarProperty Name="firmID" ColumnName="firmID" />
+                <ScalarProperty Name="IsPosted" ColumnName="IsPosted" />
+                <ScalarProperty Name="IsApproved" ColumnName="IsApproved" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_MHead">
+            <EntityTypeMapping TypeName="DbModel.tbl_MHead">
+              <MappingFragment StoreEntitySet="tbl_MHead">
+                <ScalarProperty Name="MHeadID" ColumnName="MHeadID" />
+                <ScalarProperty Name="MHead" ColumnName="MHead" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Party">
+            <EntityTypeMapping TypeName="DbModel.tbl_Party">
+              <MappingFragment StoreEntitySet="tbl_Party">
+                <ScalarProperty Name="PartyNameID" ColumnName="PartyNameID" />
+                <ScalarProperty Name="STaxPID" ColumnName="STaxPID" />
+                <ScalarProperty Name="PartyName" ColumnName="PartyName" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Debit" ColumnName="Debit" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
+                <ScalarProperty Name="PartyTypeID" ColumnName="PartyTypeID" />
+                <ScalarProperty Name="Dealer" ColumnName="Dealer" />
+                <ScalarProperty Name="UrduName" ColumnName="UrduName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="Expired" ColumnName="Expired" />
+                <ScalarProperty Name="firmid" ColumnName="firmid" />
+                <ScalarProperty Name="ts" ColumnName="ts" />
+                <ScalarProperty Name="GSTNO" ColumnName="GSTNO" />
+                <ScalarProperty Name="GreyID" ColumnName="GreyID" />
+                <ScalarProperty Name="PartyID" ColumnName="PartyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PartyCateg">
+            <EntityTypeMapping TypeName="DbModel.tbl_PartyCateg">
+              <MappingFragment StoreEntitySet="tbl_PartyCateg">
+                <ScalarProperty Name="PartyCategID" ColumnName="PartyCategID" />
+                <ScalarProperty Name="PartyCateg" ColumnName="PartyCateg" />
+                <ScalarProperty Name="HeadID" ColumnName="HeadID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_PartyType">
+            <EntityTypeMapping TypeName="DbModel.tbl_PartyType">
+              <MappingFragment StoreEntitySet="tbl_PartyType">
+                <ScalarProperty Name="PartyTypeID" ColumnName="PartyTypeID" />
+                <ScalarProperty Name="PartyType" ColumnName="PartyType" />
+                <ScalarProperty Name="UPartyType" ColumnName="UPartyType" />
+                <ScalarProperty Name="PartyCategID" ColumnName="PartyCategID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

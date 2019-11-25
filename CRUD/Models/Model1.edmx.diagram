@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="7737333f7e3d4698bba9d53fc3f643f8" Name="Diagram1">
+        <EntityTypeShape EntityType="DbModel.Firm" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbModel.tbl_Head" Width="1.5" PointX="3" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbModel.tbl_Ledger" Width="1.5" PointX="12" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbModel.tbl_MHead" Width="1.5" PointX="0.75" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbModel.tbl_Party" Width="1.5" PointX="9.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbModel.tbl_PartyCateg" Width="1.5" PointX="5.25" PointY="2.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DbModel.tbl_PartyType" Width="1.5" PointX="7.5" PointY="2.25" IsExpanded="true" />
+        <AssociationConnector Association="DbModel.FK_tbl_Head_tbl_MHead" ManuallyRouted="false" />
+        <AssociationConnector Association="DbModel.FK_tbl_PartyCateg_tbl_Head" ManuallyRouted="false" />
+        <AssociationConnector Association="DbModel.FK_tbl_Ledger_tbl_Party" ManuallyRouted="false" />
+        <AssociationConnector Association="DbModel.FK_tbl_Party_tbl_PartyType" ManuallyRouted="false" />
+        <AssociationConnector Association="DbModel.FK_tbl_PartyType_tbl_PartyCateg" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
